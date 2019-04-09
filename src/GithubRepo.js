@@ -40,11 +40,11 @@ class GithubRepo extends Component {
     }
   };
 
-  // load data from github api and add it to the state
+  // load data from github api and add it to the state created:>${last30Days}
   getRepositories = () => {
     const { perPage, pageId } = this.state;
     fetch(
-      `https://api.github.com/search/repositories?q=created:>${last30Days}&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`
+      `https://api.github.com/search/repositories?q=react&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`
     )
       .then(res => {
         if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
@@ -60,16 +60,20 @@ class GithubRepo extends Component {
       })
       .catch(error => {
         console.log(error);
-        this.setState({ hasError: true });
+        this.setState({
+          hasError: true,
+          isLoaded: true
+        });
       });
   };
 
   render() {
     const { items, isLoaded, hasError } = this.state;
-    if (hasError) return <p>Ooops! somthing whent whrong.</p>;
+    const errorMessage = hasError ? <p>Ooops! somthing whent whrong.</p> : "";
     return (
       <div className="wrapper">
         <h1>Github Repositories</h1>
+        {errorMessage}
         {items.map(item => {
           return <GithubRepoList key={item.id} {...item} />;
         })}

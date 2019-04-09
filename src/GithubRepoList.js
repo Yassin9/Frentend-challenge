@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from "react";
 import Moment from "moment";
+import { numberFormat } from "./helper";
 
 const GithubRepoList = props => {
   const {
@@ -12,6 +13,7 @@ const GithubRepoList = props => {
     open_issues_count,
     html_url
   } = props;
+
   return (
     <div className="wrap-list">
       <a
@@ -26,8 +28,12 @@ const GithubRepoList = props => {
         <h2>{name}</h2>
         <p>{description}</p>
         <div>
-          <span className="detail-count">Stars {stargazers_count}</span>
-          <span className="detail-count">Issues {open_issues_count}</span>
+          <span className="detail-count">
+            Stars {numberFormat(stargazers_count)}
+          </span>
+          <span className="detail-count">
+            Issues {numberFormat(open_issues_count)}
+          </span>
           <span className="detail-date">
             Submitted {Moment(created_at).fromNow()} by {owner.login}
           </span>
