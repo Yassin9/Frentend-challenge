@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Moment from "moment";
 import GithubRepoList from "./GithubRepoList";
 import Loading from "./Loading";
+import Octicon, { Alert } from "@githubprimer/octicons-react";
 
 // subtract 30 days from date
 const last30Days = Moment()
@@ -9,17 +10,14 @@ const last30Days = Moment()
   .format("YYYY-MM-DD");
 
 class GithubRepo extends Component {
-  constructor() {
-    super();
-    this.state = {
-      pageId: 1, // page number
-      perPage: 10, // element per page
-      items: [],
-      isLoaded: false,
-      isScrolled: true,
-      hasError: false
-    };
-  }
+  state = {
+    pageId: 1, // page number
+    perPage: 10, // element per page
+    items: [],
+    isLoaded: false,
+    isScrolled: true,
+    hasError: false
+  };
 
   componentDidMount() {
     this.getRepositories();
@@ -40,11 +38,11 @@ class GithubRepo extends Component {
     }
   };
 
-  // load data from github api and add it to the state created:>${last30Days}
+  // load data from github api and add it to the state
   getRepositories = () => {
     const { perPage, pageId } = this.state;
     fetch(
-      `https://api.github.com/search/repositories?q=react&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`
+      `https://api.github.com/search/repositories?q=created:>${last30Days}&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`
     )
       .then(res => {
         if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
@@ -69,7 +67,13 @@ class GithubRepo extends Component {
 
   render() {
     const { items, isLoaded, hasError } = this.state;
-    const errorMessage = hasError ? <p>Ooops! somthing whent whrong.</p> : "";
+    const errorMessage = hasError ? (
+      <p>
+        <Octicon icon={Alert} /> Ooops! somthing whent whrong.
+      </p>
+    ) : (
+      ""
+    );
     return (
       <div className="wrapper">
         <h1>Github Repositories</h1>

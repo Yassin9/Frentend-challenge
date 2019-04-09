@@ -15,6 +15,7 @@
   },
   "homepage": "https://github.com/Yassin9/Frentend-challenge#readme",
   "dependencies": {
+    "@githubprimer/octicons-react": "^8.5.0",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
