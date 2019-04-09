@@ -3,7 +3,8 @@
 import React from "react";
 import Moment from "moment";
 import Octicon, { Star, IssueOpened } from "@githubprimer/octicons-react";
-import { numberFormat } from "./helper";
+import { numberFormat } from "../helper";
+import "./GithubRepoList.css";
 
 const GithubRepoList = props => {
   const {

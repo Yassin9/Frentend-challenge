@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import GithubRepo from "./GithubRepo";
+import GithubRepo from "./Components/GithubRepo";
 
 class App extends Component {
   render() {
