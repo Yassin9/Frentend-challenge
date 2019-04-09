@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import Moment from "moment";
 import GithubRepoList from "./GithubRepoList";
+import Loading from "./Loading";
 
 // subtract 30 days from date
 const last30Days = Moment()
   .subtract(30, "days")
   .format("YYYY-MM-DD");
+
 class GithubRepo extends Component {
   constructor() {
     super();
@@ -14,7 +16,8 @@ class GithubRepo extends Component {
       perPage: 10, // element per page
       items: [],
       isLoaded: false,
-      isScrolled: true
+      isScrolled: true,
+      hasError: false
     };
   }
 
@@ -29,7 +32,10 @@ class GithubRepo extends Component {
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
       this.state.isScrolled
     ) {
-      this.setState({ isScrolled: false });
+      this.setState({
+        isScrolled: false,
+        isLoaded: false
+      });
       this.getRepositories();
     }
   };
@@ -40,7 +46,10 @@ class GithubRepo extends Component {
     fetch(
       `https://api.github.com/search/repositories?q=created:>${last30Days}&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`
     )
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
+        return res.json();
+      })
       .then(data => {
         this.setState({
           items: [...this.state.items, ...data.items],
@@ -48,17 +57,23 @@ class GithubRepo extends Component {
           pageId: this.state.pageId + 1,
           isScrolled: true
         });
+      })
+      .catch(error => {
+        console.log(error);
+        this.setState({ hasError: true });
       });
   };
 
   render() {
-    const { isLoaded, items } = this.state;
-    if (!isLoaded) return <h3>Loading...</h3>;
+    const { items, isLoaded, hasError } = this.state;
+    if (hasError) return <p>Ooops! somthing whent whrong.</p>;
     return (
       <div className="wrapper">
+        <h1>Github Repositories</h1>
         {items.map(item => {
           return <GithubRepoList key={item.id} {...item} />;
         })}
+        {!isLoaded ? <Loading /> : ""}
       </div>
     );
   }
