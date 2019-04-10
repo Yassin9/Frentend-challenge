@@ -1,18 +1,13 @@
 import React, { Component } from "react";
-import Moment from "moment";
+import Octicon, { Alert } from "@githubprimer/octicons-react";
 import GithubRepoList from "./GithubRepoList";
 import Loading from "./Loading";
-import Octicon, { Alert } from "@githubprimer/octicons-react";
-
-// subtract 30 days from date
-const last30Days = Moment()
-  .subtract(30, "days")
-  .format("YYYY-MM-DD");
+import { last30Days } from "../helper";
 
 class GithubRepo extends Component {
   state = {
-    pageId: 1, // page number
-    perPage: 10, // element per page
+    pageId: 1, // pagination number
+    perPage: 10, // Element per page
     items: [],
     isLoaded: false,
     isScrolled: true,
@@ -20,11 +15,11 @@ class GithubRepo extends Component {
   };
 
   componentDidMount() {
-    this.getRepositories();
+    this.loadData();
     window.addEventListener("scroll", this.onScroll);
   }
 
-  // load data when reach the end of the page
+  // load data when reach the end of the page which give infinit scroll efect
   onScroll = () => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 50 &&
@@ -34,16 +29,19 @@ class GithubRepo extends Component {
         isScrolled: false,
         isLoaded: false
       });
-      this.getRepositories();
+      this.loadData();
     }
   };
 
   // load data from github api and add it to the state
-  getRepositories = () => {
+  loadData = () => {
     const { perPage, pageId } = this.state;
-    fetch(
-      `https://api.github.com/search/repositories?q=created:>${last30Days}&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`
-    )
+
+    const endPoint = "https://api.github.com/search/repositories?q=",
+      query = `created:>${last30Days}&sort=stars&order=desc&page=${pageId}&per_page=${perPage}`,
+      url = endPoint + query;
+
+    return fetch(url)
       .then(res => {
         if (!res.ok) throw new Error(`${res.statusText} (${res.status})`);
         return res.json();
@@ -74,10 +72,12 @@ class GithubRepo extends Component {
     ) : (
       ""
     );
+
     return (
       <div className="wrapper">
         <h1>Github Repositories</h1>
         {errorMessage}
+
         {items.map(item => {
           return <GithubRepoList key={item.id} {...item} />;
         })}

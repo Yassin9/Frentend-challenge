@@ -1,21 +1,21 @@
 /* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from "react";
-import Moment from "moment";
 import Octicon, { Star, IssueOpened } from "@githubprimer/octicons-react";
-import { numberFormat } from "../helper";
+import { formatNumber, formateDate } from "../helper";
 import "./GithubRepoList.css";
 
 const GithubRepoList = props => {
   const {
-    name,
-    created_at,
-    owner,
-    stargazers_count,
-    description,
-    open_issues_count,
-    html_url
-  } = props;
+      name,
+      created_at,
+      owner,
+      stargazers_count,
+      description,
+      open_issues_count,
+      html_url
+    } = props,
+    open_issues_url = `https://github.com/${owner.login}/${name}/issues`;
 
   return (
     <div className="wrap-list">
@@ -31,18 +31,18 @@ const GithubRepoList = props => {
         <div>
           <a href="#" className="detail-count btn">
             <Octicon icon={Star} />
-            Stars: {numberFormat(stargazers_count)}
+            Stars: {formatNumber(stargazers_count)}
           </a>
           <a
-            href={`https://github.com/${owner.login}/${name}/issues`}
+            href={open_issues_url}
             className="detail-count btn"
             target="_blank"
           >
             <Octicon icon={IssueOpened} />
-            Issues: {numberFormat(open_issues_count)}
+            Issues: {formatNumber(open_issues_count)}
           </a>
           <em className="detail-date">
-            Submitted {Moment(created_at).fromNow()} by {owner.login}
+            Submitted {formateDate(created_at)} by {owner.login}
           </em>
         </div>
       </div>
