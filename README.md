@@ -1,4 +1,4 @@
-# Frentend challenge
+# Frontend challenge
 
 ## Description:
 
