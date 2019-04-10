@@ -1,7 +1,7 @@
 {
-  "name": "Frentend-challenge",
+  "name": "Frontend-challenge",
   "version": "1.0.0",
-  "description": "Frentend Challenge",
+  "description": "Frontend code Challenge",
   "main": "index.js",
   "repository": {
     "type": "git",
