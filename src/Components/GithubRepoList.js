@@ -29,7 +29,7 @@ const GithubRepoList = props => {
         <h2>{name}</h2>
         <p>{description}</p>
         <div>
-          <a href="#" className="detail-count btn">
+          <a href="#npm" className="detail-count btn">
             <Octicon icon={Star} />
             Stars: {formatNumber(stargazers_count)}
           </a>

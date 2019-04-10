@@ -13,7 +13,6 @@
   "bugs": {
     "url": "https://github.com/Yassin9/Frentend-challenge/issues"
   },
-  "homepage": "https://github.com/Yassin9/Frentend-challenge#readme",
   "dependencies": {
     "@githubprimer/octicons-react": "^8.5.0",
     "moment": "^2.24.0",
